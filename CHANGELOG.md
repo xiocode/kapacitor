@@ -4,7 +4,22 @@
 
 ### Release Notes
 
+With this release you can now replay data directly against a task from InfluxDB without having to first create a recording.
+Replay the queries defined in the batch task `cpu_alert` for the past 10 hours.
+```sh
+kapacitor replay-live batch -task cpu_alert -past 10h
+```
+
+Or for a stream task with use a query directly:
+
+```sh
+kapacitor replay-live query -task cpu_alert -query 'SELECT usage_idle FROM telegraf."default".cpu WHERE time > now() - 10h'
+```
+
+
 ### Features
+
+- [#283](https://github.com/influxdata/kapacitor/issues/283): Add live replays.
 
 
 ### Bugfixes

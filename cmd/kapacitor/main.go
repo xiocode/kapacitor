@@ -299,14 +299,14 @@ Examples:
 
 	$ kapacitor record batch -task cpu_idle -start 2015-09-01T00:00:00Z -stop 2015-09-02T00:00:00Z
 
-		This records the result of the query defined in task 'cpu_idle' and runs the query as many times
-		as many times as defined by the schedule until the queries reaches the stop time.
-		starting at time 'start' and incrementing by the schedule defined in the task.
+		This records the result of the query defined in task 'cpu_idle' and runs the query
+		until the queries reaches the stop time, starting at time 'start' and incrementing
+		by the schedule defined in the task.
 
 	$ kapacitor record batch -task cpu_idle -past 10h
 
 		This records the result of the query defined in task 'cpu_idle' and runs the query
-		as many times as defined by the schedule until the queries reaches the present time.
+		until the queries reaches the present time.
 		The starting time for the queries is 'now - 10h' and increments by the schedule defined in the task.
 
 Options:
@@ -739,6 +739,19 @@ Replay data to a task directly without saving a recording.
 The command is a hybrid of the 'kapacitor record batch|query' and 'kapacitor replay' commands.
 
 See either 'kapacitor replay-live batch' or 'kapacitor replay-live query' for more details
+Examples:
+
+	$ kapacitor replay-live batch -task cpu_idle -start 2015-09-01T00:00:00Z -stop 2015-09-02T00:00:00Z
+
+		This replays the result of the query defined in task 'cpu_idle' and runs the query
+		until the queries reaches the stop time, starting at time 'start' and incrementing
+		by the schedule defined in the task.
+
+	$ kapacitor replay-liave batch -task cpu_idle -past 10h
+
+		This replays the result of the query defined in task 'cpu_idle' and runs the query
+		until the queries reaches the present time.
+		The starting time for the queries is 'now - 10h' and increments by the schedule defined in the task.
 `
 	fmt.Fprintln(os.Stderr, u)
 }
@@ -749,6 +762,13 @@ func replayLiveBatchUsage() {
 Replay data from the queries in a batch task against the task.
 
 This is similar to 'kapacitor record batch ...' but without saving a recording.
+
+Examples:
+
+	$ kapacitor replay-live query -task cpu_alert -rec-time -query 'select value from "telegraf"."default"."cpu_idle" where time > now() - 1h and time < now()'
+
+		This replays the result of the query against the cpu_alert task.
+
 
 Options:
 `
